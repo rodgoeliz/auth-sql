@@ -1,0 +1,21 @@
+{
+  "name": "auth-sql",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.2",
+    "@hono/swagger-ui": "^0.4.1",
+    "@hono/zod-openapi": "^0.16.4",
+    "@hono/zod-validator": "^0.4.1",
+    "hono": "^4.6.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "tsx": "^4.7.1"
+  },
+  "volta": {
+    "node": "20.18.0"
+  }
+}

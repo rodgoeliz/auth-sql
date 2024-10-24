@@ -14,7 +14,6 @@ app.use(logger());
 
 // Open api doc
 app.get("/ui", swaggerUI({ url: "/doc" }));
-
 app.use("/doc/*", prettyJSON());
 app.doc("/doc", {
 	openapi: "3.0.0",
@@ -34,6 +33,7 @@ const userBSchema = z.object({
 	email: z.string().email(),
 	fullName: z.string(),
 });
+
 // types
 type UserA = z.infer<typeof userASchema>;
 type UserB = z.infer<typeof userBSchema>;
@@ -43,7 +43,13 @@ const route = createRoute({
 	method: "post",
 	path: "/transform",
 	request: {
-		params: userASchema,
+		body: {
+			content: {
+				"application/json": {
+					schema: userASchema,
+				},
+			},
+		},
 	},
 	responses: {
 		200: {
@@ -58,7 +64,7 @@ const route = createRoute({
 });
 
 app.openapi(route, (c) => {
-	const userA = c.req.valid("param");
+	const userA = c.req.valid("json");
 	const transformations: TransformationsOfB<UserA, UserB> = {
 		email: (a) => a.email,
 		fullName: (a) => a.name,
@@ -71,7 +77,6 @@ app.openapi(route, (c) => {
 /// services
 
 /// utils
-
 type TransformationsOfB<RawType, ProcessedValue> = {
 	[K in keyof ProcessedValue]: (a: RawType) => ProcessedValue[K];
 };
